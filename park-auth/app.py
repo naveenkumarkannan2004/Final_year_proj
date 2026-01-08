@@ -43,10 +43,10 @@ st.markdown("""
     
     /* File uploader styling */
     [data-testid="stFileUploader"] {
-        border: 2px dashed #4CAF50;
+        border: 2px dashed #2c5aa0;
         border-radius: 10px;
         padding: 2rem;
-        background-color: rgba(76, 175, 80, 0.05);
+        background-color: rgba(44, 90, 160, 0.05);
     }
     
     /* Chat message styling */
@@ -80,7 +80,7 @@ st.markdown("""
     
     /* Progress bar */
     .stProgress > div > div {
-        background-color: #4CAF50;
+        background-color: #2c5aa0;
     }
 </style>
 """, unsafe_allow_html=True)
