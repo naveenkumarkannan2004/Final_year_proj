@@ -4,7 +4,8 @@ Configuration file for Park Activity Monitoring Application
 import os
 
 # Model Configuration
-MODEL_PATH = "best.pt"
+# Use absolute path to ensure model is found on Streamlit Cloud
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "best.pt")
 CONFIDENCE_THRESHOLD = 0.5
 IOU_THRESHOLD = 0.45
 
@@ -42,8 +43,10 @@ APP_TITLE = "Park Activity Monitoring System"
 APP_ICON = "🏞️"
 
 # Paths
-TEMP_DIR = "temp"
-OUTPUT_DIR = "outputs"
+# Use absolute paths to work correctly on Streamlit Cloud
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMP_DIR = os.path.join(BASE_DIR, "temp")
+OUTPUT_DIR = os.path.join(BASE_DIR, "outputs")
 
 # Create necessary directories
 os.makedirs(TEMP_DIR, exist_ok=True)
