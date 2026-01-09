@@ -311,6 +311,9 @@ class ReportGenerator:
             max_frames_in_report = 10
             frames_to_show = unauthorized_frames[:max_frames_in_report]
             
+            # Keep track of temp files to delete after PDF is built
+            temp_files = []
+            
             for idx, (frame_num, frame_img, detections) in enumerate(frames_to_show):
                 story.append(Paragraph(f"Frame #{frame_num}", self.styles['Heading3']))
                 
@@ -333,15 +336,12 @@ class ReportGenerator:
                 # Save frame temporarily
                 temp_img_path = tempfile.mktemp(suffix='.jpg')
                 cv2.imwrite(temp_img_path, cv2.cvtColor(frame_img, cv2.COLOR_RGB2BGR))
+                temp_files.append(temp_img_path)  # Track for later cleanup
                 
                 # Add frame image
                 img = Image(temp_img_path, width=5*inch, height=3*inch, kind='proportional')
                 story.append(img)
                 story.append(Spacer(1, 0.2*inch))
-                
-                # Clean up temp image
-                if os.path.exists(temp_img_path):
-                    os.remove(temp_img_path)
                 
                 # Add page break after every 2 frames
                 if (idx + 1) % 2 == 0 and idx < len(frames_to_show) - 1:
@@ -353,5 +353,11 @@ class ReportGenerator:
         
         # Build PDF
         doc.build(story)
+        
+        # Clean up temp files AFTER PDF is built
+        if unauthorized_frame_count > 0:
+            for temp_file in temp_files:
+                if os.path.exists(temp_file):
+                    os.remove(temp_file)
         
         return output_path
